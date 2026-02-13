@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smartphone Video Masterclass</title>
+    <title>Eventus Masterclass</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons -->
@@ -33,7 +33,7 @@
             scrollbar-width: none;
         }
 
-        /* --- NEW: Organic Blob Background Animation --- */
+        /* --- Organic Blob Background Animation (Reverted to brighter blue/teal) --- */
         @keyframes float1 {
             0% { transform: translate(0, 0) scale(1); }
             33% { transform: translate(50px, -50px) scale(1.1); }
@@ -55,11 +55,11 @@
             position: absolute;
             border-radius: 50%;
             filter: blur(80px);
-            opacity: 0.5; /* Transparenz für den "Dark Mode" Look */
+            opacity: 0.5; 
             z-index: 0;
         }
 
-        /* Türkis/Blau Töne, aber dunkel gehalten */
+        /* Lebendigere Farben (Türkis/Blau Mix) */
         .blob-1 {
             top: -10%;
             left: -10%;
@@ -100,7 +100,7 @@
         <div class="blob blob-3"></div>
     </div>
 
-    <!-- App Container (mit z-index, damit er über dem Hintergrund liegt) -->
+    <!-- App Container -->
     <div id="app" class="relative z-10 h-full w-full bg-black/20 backdrop-blur-[10px]"></div>
 
     <script>
@@ -108,10 +108,12 @@
         const courseData = [
             {
                 id: 'm1',
-                title: 'Modul 1: Das Fundament (Mindset & Planung)',
-                description: 'Bevor die Kamera läuft, muss klar sein, wohin die Reise geht. Hier holt ihr die Teilnehmer emotional ab.',
+                title: 'Modul 1: Das Fundament',
+                subtitle: 'Mindset & Planung',
+                description: 'Bevor die Kamera läuft, muss klar sein, wohin die Reise geht. Strategie ist alles.',
+                image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=800&auto=format&fit=crop', // Notebook/Planning
                 iconName: 'layout',
-                iconColor: 'text-indigo-400',
+                iconColor: 'text-indigo-300',
                 lessons: [
                     { id: 'l1-1', title: 'Warum Video? Die Macht von Bewegtbild', duration: '05:30', videoId: 'why-video', description: 'Sichtbarkeit und Vertrauen durch Videos aufbauen.' },
                     { id: 'l1-2', title: 'Die Angst vor der Kamera besiegen', duration: '08:45', videoId: 'fear-camera', description: 'Tipps gegen Lampenfieber und für ein natürliches Auftreten.' },
@@ -121,10 +123,12 @@
             },
             {
                 id: 'm2',
-                title: 'Modul 2: Das Equipment (Was man wirklich braucht)',
-                description: 'Entmystifizierung der Technik. Der Fokus sollte darauf liegen, dass das Smartphone meistens ausreicht.',
+                title: 'Modul 2: Das Equipment',
+                subtitle: 'Was man wirklich braucht',
+                description: 'Entmystifizierung der Technik. Dein Smartphone ist mächtiger als du denkst.',
+                image: 'https://images.unsplash.com/photo-1598256989800-fe5f95da9787?q=80&w=800&auto=format&fit=crop', // Smartphone Gimbal/Setup
                 iconName: 'smartphone',
-                iconColor: 'text-purple-400',
+                iconColor: 'text-purple-300',
                 lessons: [
                     { id: 'l2-1', title: 'Kamera vs. Smartphone', duration: '07:20', videoId: 'cam-vs-phone', description: 'Warum das Handy für 90 % der Anwendungsfälle reicht.' },
                     { id: 'l2-2', title: 'Stative & Halterungen', duration: '09:10', videoId: 'tripods', description: 'Wackelfreie Bilder garantieren (Tipps zu Gimbals und Ringlicht-Stativen).' },
@@ -133,10 +137,12 @@
             },
             {
                 id: 'm3',
-                title: 'Modul 3: Das perfekte Bild (Kameraführung & Licht)',
-                description: 'Hier kommt der Kernwunsch deines Auftraggebers! Visuell und praktisch erklärt.',
+                title: 'Modul 3: Das perfekte Bild',
+                subtitle: 'Kameraführung & Licht',
+                description: 'Lerne wie ein Profi zu leuchten und zu framen. Visuell und praktisch.',
+                image: 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=800&auto=format&fit=crop', // Camera/Light
                 iconName: 'zap',
-                iconColor: 'text-yellow-400',
+                iconColor: 'text-yellow-300',
                 lessons: [
                     { id: 'l3-1', title: 'Kamera richtig halten', duration: '06:50', videoId: 'holding-cam', description: 'Hochformat (TikTok/Reels) vs. Querformat (YouTube). Die richtige Höhe (Augenhöhe!).' },
                     { id: 'l3-2', title: 'Bildkomposition: Drittel-Regel', duration: '11:30', videoId: 'composition', description: 'Rule of Thirds verständlich erklärt. Headroom beachten.' },
@@ -147,10 +153,12 @@
             },
             {
                 id: 'm4',
-                title: 'Modul 4: Action! Der eigentliche Dreh',
-                description: 'Tipps für den Workflow, damit der Dreh nicht im Chaos endet.',
+                title: 'Modul 4: Action!',
+                subtitle: 'Der eigentliche Dreh',
+                description: 'Workflow-Tipps, damit der Dreh nicht im Chaos endet. Klappe die Erste!',
+                image: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=800&auto=format&fit=crop', // Movie Set/Clapperboard
                 iconName: 'film',
-                iconColor: 'text-red-400',
+                iconColor: 'text-red-300',
                 lessons: [
                     { id: 'l4-1', title: 'Der Kamera-Check', duration: '04:00', videoId: 'pre-check', description: 'Linse putzen, Flugmodus an, Akku checken, Speicherplatz prüfen.' },
                     { id: 'l4-2', title: 'Klappe und Action', duration: '07:30', videoId: 'action-tipps', description: 'Pausen nutzen, um das Schneiden zu erleichtern. Fehler einfach weglächeln.' },
@@ -159,10 +167,12 @@
             },
             {
                 id: 'm5',
-                title: 'Modul 5: Postproduktion (Schnitt für Anfänger)',
+                title: 'Modul 5: Postproduktion',
+                subtitle: 'Schnitt für Anfänger',
                 description: 'Niemand will Stunden am PC verbringen. Die einfachsten Wege zum fertigen Video.',
+                image: 'https://images.unsplash.com/photo-1536240478700-b869070f9279?q=80&w=800&auto=format&fit=crop', // Editing Timeline
                 iconName: 'scissors',
-                iconColor: 'text-blue-400',
+                iconColor: 'text-blue-300',
                 lessons: [
                     { id: 'l5-1', title: 'Die besten Anfänger-Tools', duration: '08:00', videoId: 'tools', description: 'Vorstellung von Apps wie CapCut, InShot oder einfachen Desktop-Programmen.' },
                     { id: 'l5-2', title: 'Der Rohschnitt', duration: '10:30', videoId: 'rough-cut', description: 'Versprecher und „Ähms“ herausschneiden.' },
@@ -172,10 +182,12 @@
             },
             {
                 id: 'm6',
-                title: 'Modul 6: Raus in die Welt (Export & Veröffentlichung)',
-                description: 'Das Video ist fertig, was nun? Die letzten Schritte zum Erfolg.',
+                title: 'Modul 6: Raus in die Welt',
+                subtitle: 'Export & Veröffentlichung',
+                description: 'Das Video ist fertig, was nun? Die letzten Schritte zum viralen Erfolg.',
+                image: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=800&auto=format&fit=crop', // Social Media Icons
                 iconName: 'share-2',
-                iconColor: 'text-green-400',
+                iconColor: 'text-green-300',
                 lessons: [
                     { id: 'l6-1', title: 'Die richtigen Export-Einstellungen', duration: '05:20', videoId: 'export', description: 'Welche Auflösung (1080p vs. 4k) macht wo Sinn?' },
                     { id: 'l6-2', title: 'Thumbnail & Beschreibung', duration: '08:50', videoId: 'publish', description: 'Wie man Leute dazu bringt, überhaupt auf das Video zu klicken.' },
@@ -222,7 +234,7 @@
 
         function renderProgressBar(progress, className = "") {
             return `
-                <div class="w-full bg-gray-800 rounded-full h-2.5 ${className}">
+                <div class="w-full bg-gray-800/50 rounded-full h-2.5 ${className}">
                     <div class="bg-indigo-500 h-2.5 rounded-full transition-all duration-500 ease-out shadow-[0_0_10px_rgba(99,102,241,0.5)]" style="width: ${progress}%"></div>
                 </div>
             `;
@@ -230,13 +242,13 @@
 
         function renderVideoPlayer(lesson) {
             return `
-                <div class="aspect-video bg-black rounded-xl overflow-hidden shadow-2xl relative group border border-gray-800/50 backdrop-blur-sm">
+                <div class="aspect-video bg-black rounded-xl overflow-hidden shadow-2xl shadow-black/50 relative group border border-gray-700/50 backdrop-blur-sm">
                     <div class="absolute inset-0 flex items-center justify-center bg-black/40 group-hover:bg-black/30 transition-all cursor-pointer">
-                        <div class="w-20 h-20 bg-indigo-600/90 rounded-full flex items-center justify-center pl-2 shadow-lg hover:scale-110 transition-transform backdrop-blur-md">
+                        <div class="w-20 h-20 bg-indigo-600/90 rounded-full flex items-center justify-center pl-2 shadow-lg hover:scale-110 transition-transform backdrop-blur-md border border-white/20">
                             <i data-lucide="play" class="text-white w-10 h-10 fill-current"></i>
                         </div>
                     </div>
-                    <div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black via-black/80 to-transparent pointer-events-none">
+                    <div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black via-black/90 to-transparent pointer-events-none">
                         <h2 class="text-white text-xl font-bold">${lesson.title}</h2>
                         <p class="text-gray-300 text-sm">Videovorschau für ID: ${lesson.videoId}</p>
                     </div>
@@ -253,26 +265,42 @@
             let modulesHTML = filteredModules.map(module => {
                 const progress = getModuleProgress(module);
                 const progressBadge = progress > 0 
-                    ? `<div class="text-xs font-semibold bg-indigo-900/50 text-indigo-300 px-3 py-1 rounded-full border border-indigo-500/20 shadow-sm backdrop-blur-sm">${progress}%</div>`
+                    ? `<div class="absolute top-4 right-4 text-xs font-bold bg-indigo-600 text-white px-3 py-1 rounded-full shadow-lg z-20">${progress}%</div>`
                     : '';
                 
                 return `
-                    <button onclick="handleModuleClick('${module.id}')" class="bg-gray-900/40 hover:bg-gray-800/50 border border-gray-800/50 hover:border-gray-700/50 rounded-2xl p-6 text-left transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-indigo-500/10 group flex flex-col h-full w-full backdrop-blur-sm">
-                        <div class="flex justify-between items-start mb-6 w-full">
-                            <div class="p-3 bg-gray-950/60 rounded-xl border border-gray-800 group-hover:border-indigo-500/30 transition-colors shadow-lg">
-                                <i data-lucide="${module.iconName}" class="w-8 h-8 ${module.iconColor}"></i>
-                            </div>
-                            ${progressBadge}
+                    <button onclick="handleModuleClick('${module.id}')" class="relative overflow-hidden rounded-2xl group text-left transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-indigo-500/20 w-full h-80 flex flex-col border border-gray-700/50">
+                        
+                        <!-- Background Image -->
+                        <div class="absolute inset-0 z-0">
+                            <img src="${module.image}" alt="${module.title}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-60 group-hover:opacity-70">
+                            <!-- Gradient Overlay for readability -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-black via-gray-900/80 to-transparent"></div>
                         </div>
-                        <h3 class="text-xl font-bold text-gray-100 mb-3 group-hover:text-indigo-400 transition-colors">${module.title}</h3>
-                        <p class="text-gray-400 text-sm leading-relaxed mb-6 flex-1">${module.description}</p>
-                        <div class="pt-6 border-t border-gray-800/50 flex items-center justify-between w-full mt-auto">
-                            <div class="flex items-center gap-2 text-xs text-gray-500 font-medium">
-                                <i data-lucide="clock" class="w-3.5 h-3.5"></i>
-                                ${module.lessons.length} Lektionen
+
+                        <!-- Content -->
+                        <div class="relative z-10 p-6 flex flex-col h-full">
+                            <div class="flex justify-between items-start mb-auto">
+                                <div class="p-3 bg-black/40 backdrop-blur-md rounded-xl border border-white/10 text-white shadow-lg">
+                                    <i data-lucide="${module.iconName}" class="w-6 h-6 ${module.iconColor}"></i>
+                                </div>
+                                ${progressBadge}
                             </div>
-                            <div class="flex items-center gap-1 text-sm font-semibold text-white group-hover:translate-x-1 transition-transform">
-                                Starten <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                            
+                            <div class="mt-4">
+                                <div class="text-indigo-400 text-xs font-bold uppercase tracking-wider mb-1">${module.title}</div>
+                                <h3 class="text-2xl font-bold text-white mb-2 leading-tight shadow-black drop-shadow-md">${module.subtitle}</h3>
+                                <p class="text-gray-300 text-sm leading-relaxed line-clamp-3 mb-4 drop-shadow-sm">${module.description}</p>
+                            </div>
+                            
+                            <div class="pt-4 border-t border-white/10 flex items-center justify-between w-full mt-auto">
+                                <div class="flex items-center gap-2 text-xs text-gray-400 font-medium">
+                                    <i data-lucide="clock" class="w-3.5 h-3.5"></i>
+                                    ${module.lessons.length} Lektionen
+                                </div>
+                                <div class="flex items-center gap-1 text-sm font-bold text-white group-hover:translate-x-1 transition-transform">
+                                    Starten <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                                </div>
                             </div>
                         </div>
                     </button>
@@ -288,14 +316,14 @@
                                 <div class="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center shadow-lg shadow-indigo-500/20">
                                     <i data-lucide="film" class="text-white w-6 h-6"></i>
                                 </div>
-                                <h1 class="text-xl font-bold tracking-tight">Smartphone Masterclass</h1>
+                                <h1 class="text-xl font-bold tracking-tight text-white">Eventus Masterclass</h1>
                             </div>
                             <div class="flex items-center gap-4">
                                 <div class="hidden md:flex flex-col items-end mr-4">
                                     <span class="text-xs text-gray-400 mb-1">Gesamtfortschritt</span>
                                     <div class="w-32">${renderProgressBar(getGlobalProgress(), "mb-0")}</div>
                                 </div>
-                                <div class="w-10 h-10 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center shadow-lg">
+                                <div class="w-10 h-10 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center shadow-lg text-gray-200">
                                     <span class="font-bold text-sm">JJ</span>
                                 </div>
                             </div>
@@ -305,10 +333,10 @@
                     <!-- Hero / Welcome -->
                     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                         <div class="text-center max-w-2xl mx-auto mb-16">
-                            <h2 class="text-3xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 drop-shadow-sm">Deine Lernreise</h2>
-                            <p class="text-gray-400 text-lg mb-8 drop-shadow-md">Wähle ein Modul aus, um zu starten. Du kannst jederzeit zwischen den Themen springen.</p>
+                            <h2 class="text-3xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-indigo-200 drop-shadow-sm">Deine Lernreise</h2>
+                            <p class="text-gray-300 text-lg mb-8 drop-shadow-md">Wähle ein Modul aus, um zu starten. Du kannst jederzeit zwischen den Themen springen.</p>
                             <div class="relative max-w-md mx-auto">
-                                <i data-lucide="search" class="absolute left-4 top-3.5 w-5 h-5 text-gray-500"></i>
+                                <i data-lucide="search" class="absolute left-4 top-3.5 w-5 h-5 text-gray-400"></i>
                                 <input type="text" placeholder="Was möchtest du heute lernen?" value="${state.dashboardSearch}" 
                                     oninput="handleSearchInput(this.value)"
                                     class="w-full bg-gray-900/60 border border-gray-700/50 text-gray-200 rounded-full pl-12 pr-6 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all shadow-lg backdrop-blur-md placeholder-gray-500">
