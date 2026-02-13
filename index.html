@@ -15,7 +15,7 @@
             width: 6px;
         }
         .custom-scrollbar::-webkit-scrollbar-track {
-            background: #111827;
+            background: rgba(17, 24, 39, 0.2);
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
             background: #374151;
@@ -25,7 +25,6 @@
             background: #4b5563;
         }
         
-        /* Utility for hiding scrollbar but keeping functionality */
         .no-scrollbar::-webkit-scrollbar {
             display: none;
         }
@@ -33,15 +32,79 @@
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
+
+        /* --- NEW: Organic Blob Background Animation --- */
+        @keyframes float1 {
+            0% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(50px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+            100% { transform: translate(0, 0) scale(1); }
+        }
+        @keyframes float2 {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(-40px, 30px) rotate(10deg); }
+            100% { transform: translate(0, 0) rotate(0deg); }
+        }
+        @keyframes float3 {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(30px, 40px) scale(1.2); }
+            100% { transform: translate(0, 0) scale(1); }
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.5; /* Transparenz für den "Dark Mode" Look */
+            z-index: 0;
+        }
+
+        /* Türkis/Blau Töne, aber dunkel gehalten */
+        .blob-1 {
+            top: -10%;
+            left: -10%;
+            width: 50vw;
+            height: 50vw;
+            background: #0e7490; /* Cyan-700 */
+            animation: float1 20s infinite ease-in-out alternate;
+            opacity: 0.4;
+        }
+        
+        .blob-2 {
+            bottom: -20%;
+            right: -10%;
+            width: 60vw;
+            height: 60vw;
+            background: #1e3a8a; /* Blue-900 */
+            animation: float2 25s infinite ease-in-out alternate;
+            opacity: 0.5;
+        }
+
+        .blob-3 {
+            top: 40%;
+            left: 40%;
+            width: 40vw;
+            height: 40vw;
+            background: #0f766e; /* Teal-700 */
+            animation: float3 22s infinite ease-in-out alternate;
+            opacity: 0.3;
+        }
     </style>
 </head>
-<body class="bg-gray-900 text-gray-100 font-sans overflow-hidden selection:bg-indigo-500 selection:text-white h-screen flex flex-col">
+<body class="bg-[#020617] text-gray-100 font-sans overflow-hidden selection:bg-indigo-500 selection:text-white h-screen flex flex-col relative">
 
-    <!-- App Container -->
-    <div id="app" class="h-full w-full"></div>
+    <!-- Background Layer (Bubbles) -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <!-- App Container (mit z-index, damit er über dem Hintergrund liegt) -->
+    <div id="app" class="relative z-10 h-full w-full bg-black/20 backdrop-blur-[10px]"></div>
 
     <script>
-        // --- DATEN (Exakt wie in der React Version) ---
+        // --- DATEN ---
         const courseData = [
             {
                 id: 'm1',
@@ -159,21 +222,21 @@
 
         function renderProgressBar(progress, className = "") {
             return `
-                <div class="w-full bg-gray-700 rounded-full h-2.5 ${className}">
-                    <div class="bg-indigo-500 h-2.5 rounded-full transition-all duration-500 ease-out" style="width: ${progress}%"></div>
+                <div class="w-full bg-gray-800 rounded-full h-2.5 ${className}">
+                    <div class="bg-indigo-500 h-2.5 rounded-full transition-all duration-500 ease-out shadow-[0_0_10px_rgba(99,102,241,0.5)]" style="width: ${progress}%"></div>
                 </div>
             `;
         }
 
         function renderVideoPlayer(lesson) {
             return `
-                <div class="aspect-video bg-black rounded-xl overflow-hidden shadow-2xl relative group border border-gray-800">
-                    <div class="absolute inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 group-hover:bg-opacity-40 transition-all cursor-pointer">
-                        <div class="w-20 h-20 bg-indigo-600 rounded-full flex items-center justify-center pl-2 shadow-lg hover:scale-110 transition-transform">
+                <div class="aspect-video bg-black rounded-xl overflow-hidden shadow-2xl relative group border border-gray-800/50 backdrop-blur-sm">
+                    <div class="absolute inset-0 flex items-center justify-center bg-black/40 group-hover:bg-black/30 transition-all cursor-pointer">
+                        <div class="w-20 h-20 bg-indigo-600/90 rounded-full flex items-center justify-center pl-2 shadow-lg hover:scale-110 transition-transform backdrop-blur-md">
                             <i data-lucide="play" class="text-white w-10 h-10 fill-current"></i>
                         </div>
                     </div>
-                    <div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent pointer-events-none">
+                    <div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black via-black/80 to-transparent pointer-events-none">
                         <h2 class="text-white text-xl font-bold">${lesson.title}</h2>
                         <p class="text-gray-300 text-sm">Videovorschau für ID: ${lesson.videoId}</p>
                     </div>
@@ -190,20 +253,20 @@
             let modulesHTML = filteredModules.map(module => {
                 const progress = getModuleProgress(module);
                 const progressBadge = progress > 0 
-                    ? `<div class="text-xs font-semibold bg-indigo-900/50 text-indigo-300 px-3 py-1 rounded-full border border-indigo-500/20">${progress}%</div>`
+                    ? `<div class="text-xs font-semibold bg-indigo-900/50 text-indigo-300 px-3 py-1 rounded-full border border-indigo-500/20 shadow-sm backdrop-blur-sm">${progress}%</div>`
                     : '';
                 
                 return `
-                    <button onclick="handleModuleClick('${module.id}')" class="bg-gray-800/40 hover:bg-gray-800 border border-gray-700/50 hover:border-gray-600 rounded-2xl p-6 text-left transition-all duration-300 hover:-translate-y-1 hover:shadow-xl group flex flex-col h-full w-full">
+                    <button onclick="handleModuleClick('${module.id}')" class="bg-gray-900/40 hover:bg-gray-800/50 border border-gray-800/50 hover:border-gray-700/50 rounded-2xl p-6 text-left transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-indigo-500/10 group flex flex-col h-full w-full backdrop-blur-sm">
                         <div class="flex justify-between items-start mb-6 w-full">
-                            <div class="p-3 bg-gray-900 rounded-xl border border-gray-800 group-hover:border-indigo-500/30 transition-colors">
+                            <div class="p-3 bg-gray-950/60 rounded-xl border border-gray-800 group-hover:border-indigo-500/30 transition-colors shadow-lg">
                                 <i data-lucide="${module.iconName}" class="w-8 h-8 ${module.iconColor}"></i>
                             </div>
                             ${progressBadge}
                         </div>
                         <h3 class="text-xl font-bold text-gray-100 mb-3 group-hover:text-indigo-400 transition-colors">${module.title}</h3>
                         <p class="text-gray-400 text-sm leading-relaxed mb-6 flex-1">${module.description}</p>
-                        <div class="pt-6 border-t border-gray-700/50 flex items-center justify-between w-full mt-auto">
+                        <div class="pt-6 border-t border-gray-800/50 flex items-center justify-between w-full mt-auto">
                             <div class="flex items-center gap-2 text-xs text-gray-500 font-medium">
                                 <i data-lucide="clock" class="w-3.5 h-3.5"></i>
                                 ${module.lessons.length} Lektionen
@@ -217,9 +280,9 @@
             }).join('');
 
             return `
-                <div class="min-h-screen bg-gray-900 text-gray-100 pb-20 overflow-y-auto custom-scrollbar h-full">
+                <div class="min-h-screen text-gray-100 pb-20 overflow-y-auto custom-scrollbar h-full">
                     <!-- Header -->
-                    <header class="bg-gray-950 border-b border-gray-800 sticky top-0 z-30">
+                    <header class="bg-gray-950/60 backdrop-blur-md border-b border-gray-800/50 sticky top-0 z-30">
                         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
                             <div class="flex items-center gap-3">
                                 <div class="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center shadow-lg shadow-indigo-500/20">
@@ -232,8 +295,8 @@
                                     <span class="text-xs text-gray-400 mb-1">Gesamtfortschritt</span>
                                     <div class="w-32">${renderProgressBar(getGlobalProgress(), "mb-0")}</div>
                                 </div>
-                                <div class="w-10 h-10 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center">
-                                    <span class="font-bold text-sm">DU</span>
+                                <div class="w-10 h-10 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center shadow-lg">
+                                    <span class="font-bold text-sm">JJ</span>
                                 </div>
                             </div>
                         </div>
@@ -242,13 +305,13 @@
                     <!-- Hero / Welcome -->
                     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                         <div class="text-center max-w-2xl mx-auto mb-16">
-                            <h2 class="text-3xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-500">Deine Lernreise</h2>
-                            <p class="text-gray-400 text-lg mb-8">Wähle ein Modul aus, um zu starten. Du kannst jederzeit zwischen den Themen springen.</p>
+                            <h2 class="text-3xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 drop-shadow-sm">Deine Lernreise</h2>
+                            <p class="text-gray-400 text-lg mb-8 drop-shadow-md">Wähle ein Modul aus, um zu starten. Du kannst jederzeit zwischen den Themen springen.</p>
                             <div class="relative max-w-md mx-auto">
                                 <i data-lucide="search" class="absolute left-4 top-3.5 w-5 h-5 text-gray-500"></i>
                                 <input type="text" placeholder="Was möchtest du heute lernen?" value="${state.dashboardSearch}" 
                                     oninput="handleSearchInput(this.value)"
-                                    class="w-full bg-gray-800/50 border border-gray-700 text-gray-200 rounded-full pl-12 pr-6 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all shadow-lg backdrop-blur-sm">
+                                    class="w-full bg-gray-900/60 border border-gray-700/50 text-gray-200 rounded-full pl-12 pr-6 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all shadow-lg backdrop-blur-md placeholder-gray-500">
                             </div>
                         </div>
 
@@ -283,7 +346,7 @@
                 }
 
                 return `
-                    <button onclick="handleLessonClick('${lesson.id}')" class="w-full flex items-start gap-3 p-3 rounded-xl text-left transition-all duration-200 group border ${isActive ? 'bg-indigo-900/20 border-indigo-500/40 shadow-sm' : 'hover:bg-gray-900 border-transparent hover:border-gray-800'}">
+                    <button onclick="handleLessonClick('${lesson.id}')" class="w-full flex items-start gap-3 p-3 rounded-xl text-left transition-all duration-200 group border ${isActive ? 'bg-indigo-900/30 border-indigo-500/40 shadow-sm backdrop-blur-sm' : 'hover:bg-gray-800/40 border-transparent hover:border-gray-800/50'}">
                         <div class="mt-0.5 flex-shrink-0">${icon}</div>
                         <div class="min-w-0">
                             <div class="text-sm font-medium truncate ${isActive ? 'text-indigo-200' : 'text-gray-300'}">${lesson.title}</div>
@@ -297,8 +360,8 @@
 
             // Complete Button HTML
             const completeBtnClass = isCompleted 
-                ? 'bg-green-500 text-white shadow-lg shadow-green-900/20' 
-                : 'bg-white text-gray-900 hover:bg-gray-100 shadow-lg shadow-white/10';
+                ? 'bg-green-500/90 text-white shadow-lg shadow-green-900/30 backdrop-blur-sm' 
+                : 'bg-white/95 text-gray-900 hover:bg-white shadow-lg shadow-white/10 backdrop-blur-sm';
             
             const completeBtnContent = isCompleted
                 ? `<i data-lucide="check-circle" class="w-5 h-5"></i> Lektion abgeschlossen`
@@ -313,23 +376,23 @@
 
             // Sidebar Overlay for Mobile
             const overlayHTML = state.isSidebarOpen 
-                ? `<div class="fixed inset-0 bg-black/60 z-40 lg:hidden backdrop-blur-sm" onclick="toggleSidebar()"></div>` 
+                ? `<div class="fixed inset-0 bg-black/80 z-40 lg:hidden backdrop-blur-sm" onclick="toggleSidebar()"></div>` 
                 : '';
 
             const sidebarTransform = state.isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0';
 
             return `
-                <div class="flex h-screen bg-gray-900 text-gray-100 font-sans overflow-hidden w-full relative">
+                <div class="flex h-screen text-gray-100 font-sans overflow-hidden w-full relative">
                     ${overlayHTML}
 
                     <!-- Sidebar -->
-                    <aside class="fixed lg:static inset-y-0 left-0 z-50 w-80 bg-gray-950 border-r border-gray-800 flex flex-col transition-transform duration-300 ease-in-out ${sidebarTransform}">
-                        <div class="p-4 border-b border-gray-800 bg-gray-950">
-                            <button onclick="handleBackToDashboard()" class="flex items-center gap-2 text-gray-400 hover:text-white mb-6 text-sm font-medium transition-colors hover:bg-gray-800 p-2 rounded-lg w-full">
+                    <aside class="fixed lg:static inset-y-0 left-0 z-50 w-80 bg-gray-950/80 backdrop-blur-xl border-r border-gray-800/50 flex flex-col transition-transform duration-300 ease-in-out ${sidebarTransform} shadow-2xl">
+                        <div class="p-4 border-b border-gray-800/50">
+                            <button onclick="handleBackToDashboard()" class="flex items-center gap-2 text-gray-400 hover:text-white mb-6 text-sm font-medium transition-colors hover:bg-gray-800/50 p-2 rounded-lg w-full">
                                 <i data-lucide="arrow-left" class="w-4 h-4"></i> Zurück zur Übersicht
                             </button>
                             <div class="flex items-center gap-3 mb-4">
-                                <div class="w-8 h-8 bg-gray-800 rounded-lg flex items-center justify-center border border-gray-700 ${activeModule.iconColor}">
+                                <div class="w-8 h-8 bg-gray-900 rounded-lg flex items-center justify-center border border-gray-800 ${activeModule.iconColor} shadow-inner">
                                     <i data-lucide="${activeModule.iconName}" class="w-5 h-5"></i>
                                 </div>
                                 <div>
@@ -346,15 +409,15 @@
                         <div class="flex-1 overflow-y-auto custom-scrollbar p-3 space-y-2">
                             ${sidebarLessonsHTML}
                         </div>
-                        <div class="p-4 border-t border-gray-800 bg-gray-950/50">
+                        <div class="p-4 border-t border-gray-800/50 bg-gray-950/50">
                             <div class="text-xs text-gray-500 text-center">Gesamtkurs: ${getGlobalProgress()}% fertig</div>
                         </div>
                     </aside>
 
                     <!-- Main Content -->
-                    <main class="flex-1 flex flex-col h-full overflow-hidden bg-gray-900 relative">
+                    <main class="flex-1 flex flex-col h-full overflow-hidden relative">
                         <!-- Mobile Header -->
-                        <header class="h-14 border-b border-gray-800 flex items-center justify-between px-4 lg:hidden bg-gray-950 shrink-0">
+                        <header class="h-14 border-b border-gray-800/50 flex items-center justify-between px-4 lg:hidden bg-gray-950/80 backdrop-blur-md shrink-0">
                             <div class="flex items-center gap-3">
                                 <button onclick="handleBackToDashboard()" class="p-1 text-gray-400">
                                     <i data-lucide="arrow-left" class="w-5 h-5"></i>
@@ -370,22 +433,22 @@
                         <div class="flex-1 overflow-y-auto p-4 lg:p-8 custom-scrollbar">
                             <div class="max-w-5xl mx-auto pb-20">
                                 <div class="hidden lg:flex items-center gap-2 text-sm text-gray-500 mb-6 font-medium">
-                                    <span onclick="handleBackToDashboard()" class="hover:text-white cursor-pointer transition-colors">Dashboard</span>
+                                    <span onclick="handleBackToDashboard()" class="hover:text-white cursor-pointer transition-colors drop-shadow-md">Dashboard</span>
                                     <i data-lucide="chevron-right" class="w-4 h-4"></i>
-                                    <span class="text-indigo-400">${activeModule.title}</span>
+                                    <span class="text-indigo-400 drop-shadow-md">${activeModule.title}</span>
                                 </div>
 
                                 <div class="mb-8">
                                     ${renderVideoPlayer(activeLesson)}
                                 </div>
 
-                                <div class="flex flex-col lg:flex-row lg:items-start justify-between gap-8 mb-10 pb-8 border-b border-gray-800">
+                                <div class="flex flex-col lg:flex-row lg:items-start justify-between gap-8 mb-10 pb-8 border-b border-gray-800/50">
                                     <div class="flex-1 space-y-4">
                                         <div class="flex items-center gap-3">
-                                            <span class="px-2.5 py-0.5 rounded text-xs font-bold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">LEKTION ${activeLessonIndex + 1}</span>
+                                            <span class="px-2.5 py-0.5 rounded text-xs font-bold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 backdrop-blur-sm">LEKTION ${activeLessonIndex + 1}</span>
                                         </div>
-                                        <h1 class="text-2xl md:text-3xl font-bold text-white">${activeLesson.title}</h1>
-                                        <p class="text-gray-400 leading-relaxed text-lg max-w-2xl">${activeLesson.description}</p>
+                                        <h1 class="text-2xl md:text-3xl font-bold text-white drop-shadow-lg">${activeLesson.title}</h1>
+                                        <p class="text-gray-400 leading-relaxed text-lg max-w-2xl drop-shadow-md">${activeLesson.description}</p>
                                         <div class="flex gap-3 pt-2">
                                             <button class="text-sm text-gray-400 hover:text-white underline underline-offset-4 decoration-gray-700">Materialien herunterladen</button>
                                         </div>
@@ -398,13 +461,13 @@
                                 </div>
 
                                 <div class="grid grid-cols-2 gap-4">
-                                    <button onclick="handlePrev()" ${prevDisabled} class="flex flex-col items-start gap-1 p-4 rounded-xl border border-gray-800 hover:bg-gray-800/50 hover:border-gray-700 transition-all group text-left ${prevDisabled ? '' : 'hover:shadow-lg'}">
+                                    <button onclick="handlePrev()" ${prevDisabled} class="flex flex-col items-start gap-1 p-4 rounded-xl border border-gray-800/50 bg-gray-900/40 hover:bg-gray-800/60 hover:border-gray-700/50 backdrop-blur-sm transition-all group text-left ${prevDisabled ? '' : 'hover:shadow-lg'}">
                                         <span class="text-xs text-gray-500 font-bold uppercase flex items-center gap-1 group-hover:text-indigo-400 transition-colors">
                                             <i data-lucide="chevron-left" class="w-3 h-3"></i> Vorherige
                                         </span>
                                         <span class="font-semibold text-gray-300 group-hover:text-white truncate w-full">${prevTitle}</span>
                                     </button>
-                                    <button onclick="handleNext()" ${nextDisabled} class="flex flex-col items-end gap-1 p-4 rounded-xl border border-gray-800 hover:bg-gray-800/50 hover:border-gray-700 transition-all group text-right ${nextDisabled ? '' : 'hover:shadow-lg'}">
+                                    <button onclick="handleNext()" ${nextDisabled} class="flex flex-col items-end gap-1 p-4 rounded-xl border border-gray-800/50 bg-gray-900/40 hover:bg-gray-800/60 hover:border-gray-700/50 backdrop-blur-sm transition-all group text-right ${nextDisabled ? '' : 'hover:shadow-lg'}">
                                         <span class="text-xs text-gray-500 font-bold uppercase flex items-center gap-1 group-hover:text-indigo-400 transition-colors">
                                             Nächste <i data-lucide="chevron-right" class="w-3 h-3"></i>
                                         </span>
@@ -414,16 +477,16 @@
 
                                 <div class="mt-16">
                                     <div class="flex items-center gap-2 mb-6">
-                                        <h3 class="text-xl font-bold">Diskussion</h3>
-                                        <span class="bg-gray-800 text-xs px-2 py-0.5 rounded-full text-gray-400">12</span>
+                                        <h3 class="text-xl font-bold drop-shadow-md">Diskussion</h3>
+                                        <span class="bg-gray-800/80 text-xs px-2 py-0.5 rounded-full text-gray-400 backdrop-blur-sm">12</span>
                                     </div>
-                                    <div class="bg-gray-950/50 rounded-2xl p-6 border border-gray-800/50 flex gap-4">
-                                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center font-bold text-white shadow-lg shrink-0">DU</div>
+                                    <div class="bg-gray-950/40 rounded-2xl p-6 border border-gray-800/50 flex gap-4 backdrop-blur-md shadow-xl">
+                                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center font-bold text-white shadow-lg shrink-0">JJ</div>
                                         <div class="flex-1">
-                                            <textarea placeholder="Hast du Fragen zu dieser Lektion?" class="w-full bg-transparent border-0 text-gray-200 placeholder-gray-600 focus:ring-0 outline-none resize-none h-20 text-lg"></textarea>
-                                            <div class="flex justify-between items-center mt-2 border-t border-gray-800 pt-4">
+                                            <textarea placeholder="Hast du Fragen zu dieser Lektion?" class="w-full bg-transparent border-0 text-gray-200 placeholder-gray-500 focus:ring-0 outline-none resize-none h-20 text-lg"></textarea>
+                                            <div class="flex justify-between items-center mt-2 border-t border-gray-800/50 pt-4">
                                                 <div class="text-xs text-gray-500">Markdown unterstützt</div>
-                                                <button class="text-sm bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-2 rounded-lg font-bold transition-colors">Senden</button>
+                                                <button class="text-sm bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-2 rounded-lg font-bold transition-colors shadow-lg shadow-indigo-500/20">Senden</button>
                                             </div>
                                         </div>
                                     </div>
